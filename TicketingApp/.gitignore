@@ -396,3 +396,6 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+#added as per the git tutorial
+*.sln, *.vcxproj
