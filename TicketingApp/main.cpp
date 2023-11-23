@@ -4,6 +4,8 @@
 
 using namespace std;
 
+//enum ticketEvent = {Theater, Movie, Football};
+
 class User
 {
 
@@ -28,6 +30,15 @@ class Ticket
 	static int noOfTickets;
 
 public:
+
+	Ticket() : id(1) {
+		this->section = "";
+		this->row = 0;
+		this->seat = 0;
+		this->price = 0;
+		this->noOfPriceChanges = 0;
+		this->priceHistory = nullptr;
+	}
 
 	Ticket(int id, string section, int row, int seat) : id(id)
 	{
@@ -87,6 +98,43 @@ public:
 		}
 	}
 
+	//Setters
+
+	void setSection(string section) {
+		if (section != "Court 1" || section != "Court 2") {
+			throw exception("This is not an available section!");
+		}
+		this->section = section;
+	}
+
+	//overloading of operator =
+	Ticket& operator=(const Ticket& t)
+	{
+		if (this != &t)
+		{
+			this->section = t.section;
+			this->row = t.row;
+			this->seat = t.seat;
+			this->price = t.price;
+			this->noOfPriceChanges = t.noOfPriceChanges;
+
+			if (this->priceHistory != nullptr)
+			{
+				delete[] this->priceHistory;
+			}
+
+			if (t.priceHistory != nullptr)
+			{
+				this->priceHistory = new int[t.noOfPriceChanges];
+				for (int i = 0; i < this->noOfPriceChanges; i++)
+				{
+					this->priceHistory[i] = t.priceHistory[i];
+				}
+			}
+		}
+
+		return *this;
+	}
 };
 
 
