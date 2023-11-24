@@ -1,6 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <string>;
 #include <iostream>;
+#include <regex>
 
 using namespace std;
 
@@ -105,6 +106,27 @@ public:
 			throw exception("This is not an available section!");
 		}
 		this->section = section;
+	}
+
+	void setRow(int row) {
+		if (row != (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13)){
+			throw exception("This row does not exist!");
+		}
+		this->row = row;
+	}
+
+	void setSeat(int seat) {
+		if (seat != (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24)) {
+			throw exception("This seat does not exist!");
+		}
+		this->seat = seat;
+	}
+
+	void setPrice(int price) {
+		if (price < 20 || price>1000) {
+			throw exception("This price is invalid");
+		 }
+		this->price = price;
 	}
 
 	//overloading of operator =
