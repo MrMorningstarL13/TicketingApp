@@ -1,19 +1,25 @@
 #define _CRT_SECURE_NO_WARNINGS
-#include <string>;
-#include <iostream>;
-#include <regex>
+#include<string>;
+#include<iostream>;
 
 using namespace std;
 
-//enum ticketEvent = {Theater, Movie, Football};
+//enum eventType = {THEATER, MOVIE, FOOTBALL};
 
 class User
 {
-
-private:
-	const int id;
 	string name;
 	string phoneNumber;
+
+};
+
+class Event
+{
+	string name;
+	string date;
+	char category;
+	string organizers[10];
+	string* sponsors[10];
 
 };
 
@@ -47,6 +53,10 @@ public:
 		this->seat = seat;
 		this->row = row;
 
+		this->price = 0;
+		this->noOfPriceChanges = 0;
+		this->priceHistory = nullptr;
+
 		noOfTickets++;
 	}
 
@@ -65,6 +75,9 @@ public:
 		else {
 			this->priceHistory = nullptr;
 		}
+
+		this->row = 0;
+		this->seat = 0;
 
 		noOfTickets++;
 	}
@@ -97,6 +110,21 @@ public:
 		{
 			delete[] this->priceHistory;
 		}
+	}
+
+	//a method that prints the ticket
+
+	void showTicket() {
+		cout << "Ticket " << this->id << " for the section " << this->section <<" , row " << this->row <<" and seat "<<this->seat<<"\n";
+	}
+
+	//a method that modifies the price of the ticket
+	void changePrice(int newPrice) {
+		cout << "Old ticket price is " << this->price<<'\n\n';
+
+		this->price = newPrice;
+
+		cout<<"New ticket price is "<<this->price << '\n\n';
 	}
 
 	//Setters
@@ -157,11 +185,48 @@ public:
 
 		return *this;
 	}
+
+	friend ostream& operator<<(ostream& out, Ticket t);
+	friend istream& operator>>(istream& in, Ticket t);
 };
 
+int Ticket::noOfTickets=0;
 
+ostream& operator<<(ostream& out, Ticket t) {
+	out <<"ID: " << t.id << "\nPRICE: " << t.price << "\nSECTION: " << t.section << "\nROW: " << t.row << "\nSEAT: " << t.seat << "\n";
+	return out;
+};
+
+istream& operator>>(istream& in, Ticket& t) {
+	cout << "Ticket price: ";
+	int iBuffer;
+	in >> iBuffer;
+	t.setPrice(iBuffer);
+
+	string sBuffer;
+	cout << "Ticket section: ";
+	in >> sBuffer;
+	t.setSection(sBuffer);
+
+	iBuffer = 0;
+	cout << "Ticket row: ";
+	in >> iBuffer;
+	t.setRow(iBuffer);
+
+	iBuffer = 0;
+	cout << "Ticket seat: ";
+	in >> iBuffer;
+	t.setSeat(iBuffer);
+
+	return in;
+};
 
 int main() {
+	cout << "Constructor1 with some parameters-----------\n";
+	Ticket t1(3,"Court 1", 3, 7);
+	cout << t1;
+
+	cout << "--------------------------------------------\n";
 
 	return 0;
 }
