@@ -195,6 +195,28 @@ class User
 
 //operator[], cast operator, operator!, operator==
 
+	string& operator[](int index) {
+		if (friends != nullptr && index > 0 && index < noFriends) {
+			return friends[index];
+		}
+	}
+
+	bool operator!() {
+		return this->noFriends < 0;
+	}
+
+	operator int() {
+		return this->age;
+	}
+
+	bool operator==(const User& u) {
+		return this->age == u.age;
+	}
+
+	bool operator>=(const User& u) {
+		return this->age >= u.age;
+	}
+
 };
 
 ostream& operator<<(ostream& out, User u) {
@@ -425,6 +447,10 @@ public:
 	bool operator==(const Event& e) {
 		return this->name == e.name;
 	}
+
+	bool operator>=(const Event& e) {
+		return this->noOfSponsors >= e.noOfSponsors;
+	}
 };
 
 ostream& operator<<(ostream& out, Event e) {
@@ -545,21 +571,14 @@ public:
 
 	//a method that modifies the price of the ticket
 	void changePrice(int newPrice) {
-		cout << "Old ticket price is " << this->price<<'\n\n';
+		cout << "Old ticket price is " << this->price << "\n";
 
 		this->price = newPrice;
 
-		cout<<"New ticket price is "<<this->price << '\n\n';
+		cout << "New ticket price is " << this->price << "\n";
 	}
 
 	//Getters
-	//const int id;
-	//string section;
-	//int row;
-	//int seat;
-	//int price;
-	//int noOfPriceChanges;
-	//int* priceHistory;
 
 	string getSection() {
 		return this->section;
@@ -714,6 +733,10 @@ public:
 	bool operator==(const Ticket& t) {
 		return this->price == t.price;
 	}
+
+	bool operator >=(const Ticket& t) {
+		return this->price >= t.price;
+	}
 };
 
 int Ticket::noOfTickets=0;
@@ -751,6 +774,15 @@ int main() {
 	cout << "Constructor1 with some parameters-----------\n";
 	Ticket t1(3,"Court 1", 3, 7);
 	cout << t1;
+	Ticket t2;
+	t2 = t1;
+	t1.showTicket();
+	int i=t1.getPrice();
+	cout << i<<"\n";
+	t1.setPrice(450);
+	i = t1.getPrice();
+	cout << i<<"\n";
+	t1.changePrice(600);
 
 	cout << "\n--------------------------------------------\n";
 
