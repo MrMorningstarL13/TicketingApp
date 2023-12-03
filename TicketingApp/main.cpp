@@ -14,7 +14,6 @@ class User
 	string* friends;
 	int noFriends;
 
-
 //2 constructors with parameters
 
 	User(const char* name) {
@@ -50,11 +49,123 @@ class User
 
 //destructor
 
+	~User() {
+		if (this->name != nullptr) {
+			delete[] this->name;
+			this->name = nullptr;
+		}
+		else {
+			this->name = nullptr;
+		}
+		if (this->friends != nullptr) {
+			delete[] this->friends;
+			this->friends = nullptr;
+		}
+		else {
+			this->friends = nullptr;
+		}
+	}
+
 //setters
+
+	void setName(char* name) {
+		if (this->name != nullptr) {
+			delete[] this->name;
+		}
+
+		if (name != nullptr) {
+			this->name = new char[strlen(name) + 1];
+			strcpy(this->name, name);
+		}
+	}
+
+	void setPhoneNumber(string phoneNumber) {
+		this->phoneNumber = phoneNumber;
+	}
+
+	void setAge(int age) {
+		this->age = age;
+	}
+
+	void setFriendsAndNr(string* friends, int newNrFriends) {
+		if (this->friends != nullptr) {
+			delete[] this->friends;
+		}
+
+		if (friends != nullptr) {
+			this->friends = new string[newNrFriends];
+			for (int i = 0; i < newNrFriends; i++) {
+				this->friends[i] = friends[i];
+			}
+		}
+		else {
+			this->friends = nullptr;
+		}
+		this->noFriends = newNrFriends;
+	}
+
+	void setNrFriends(int newNrFriends) {
+		this->noFriends = newNrFriends;
+	}
 
 //getters
 
+
+	char* getName() {
+		return this->name;
+	}
+
+	string getPhoneNumber() {
+		return this->phoneNumber;
+	}
+
+	int getAge() {
+		return this->age;
+	}
+
+	string* getFriends() {
+		string* copy;
+		copy = new string[noFriends];
+		for (int i = 0; i < noFriends; i++) {
+			copy[i] = this->friends[i];
+		}
+		return copy;
+	}
+
+	int getNoFriends() {
+		return this->noFriends;
+	}
+
+
 //2 generic methods
+
+	void showUser() {
+		cout << this->name << " " << this->age << " " << this->age << "\n";
+	}
+
+	void addFriend(string newFriend) {
+		string* copyFriends;
+		if (newFriend.length()>3) {
+			copyFriends = new string[noFriends + 1];
+			for (int i = 0; i < noFriends; i++) {
+				copyFriends[i] = this->friends[i];
+			}
+
+			copyFriends[noFriends] = newFriend;
+			noFriends += 1;
+
+			delete[] this->friends;
+			this->friends = new string[noFriends];
+			for (int i = 0; i < noFriends; i++) {
+				this->friends[i] = copyFriends[i];
+			}
+
+			delete[] copyFriends;
+		}
+		else {
+			throw exception("Name of new friend is invalid!");
+		}
+	}
 
 
 //operator=
@@ -77,12 +188,43 @@ class User
 
 
 //>>
+	friend istream& operator>>(istream& in, User& u);
 
 //<<
+	friend ostream& operator<<(ostream& out, User u);
 
 //operator[], cast operator, operator!, operator==
 
 };
+
+ostream& operator<<(ostream& out, User u) {
+	out << u.name << " " << u.age << " " << u.phoneNumber << " " << u.noFriends << "\n";
+	return out;
+}
+
+istream& operator>>(istream& in, User& u) {
+	cout << "User name: ";
+	char* buffer=nullptr;
+	in >> buffer;
+	u.setName(buffer);
+
+	cout << "Phone number: ";
+	string buffer1 = "";
+	in >> buffer1;
+	u.setPhoneNumber(buffer1);
+
+	cout << "Age: ";
+	int iBuffer = 0;
+	in >> iBuffer;
+	u.setAge(iBuffer);
+
+	cout << "Number of friends you are coming with: ";
+	iBuffer = 0;
+	in >> iBuffer;
+	u.setNrFriends(iBuffer);
+
+	return in;
+}
 
 enum Category { Movie, Theater, Football, Basketball};
 
